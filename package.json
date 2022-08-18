@@ -1,0 +1,22 @@
+{
+  "name": "knights-travails",
+  "version": "1.0.0",
+  "description": "This is odin project js algorithms practice",
+  "main": "knights-travails.js",
+  "scripts": {
+    "test": "jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/L3OL1N/Knights-Travails.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/L3OL1N/Knights-Travails/issues"
+  },
+  "homepage": "https://github.com/L3OL1N/Knights-Travails#readme",
+  "devDependencies": {
+    "jest": "^28.1.3"
+  }
+}
