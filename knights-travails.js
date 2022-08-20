@@ -5,38 +5,98 @@ class Board{
     build(pos=[null,null]){
         if(!this.root){
             this.root = new Knight(pos);
-        }
-        function Next(pos,move){
-            pos = [pos[0]-1,pos[1]+2];
-            if(pos[0] < 0 || pos[1] > 7) return;
-            if(!move.UL){
-                move.UL = new Knight(pos);
-                Next(pos,move.UL)
-                return;
             }
-        }
-        return Next(pos,this.root);
+            for(let el in this.root){
+                if(el != "pos"){
+                    this.root[el] = new Knight([pos[0]+1,pos[1]+1])
+                }
+            }
     }
+    
+    // BestMove(end,count = 0){
+    //     if(queue.length < 0){
+    //         return {Count:100};
+    //     }
+    //     let cur = queue.shift();
+    //         if(checkVisted(cur,moves)){
+    //             moves.move.push(cur);
+    //             if(arrayIsEqual(cur,end)) return {Count:count};
+    //             for(let next of Next(cur)){
+    //                 if(checkVisted(next,moves)){
+    //                     queue.push(next);
+    //                 }
+    //             }
+    //             console.log(queue);
+    //             let result = BestMove(end,count++)
+    //             console.log(result);
+    //             bestMoves.push(result);
+    //             return bestMoves[1];
+    //         }
+    // }
 }
 class Knight{
-    constructor(pos,nextPos,UL){
+    constructor(pos){
         this.pos = pos;
-        this.nextPos = nextPos;
-        this.UL = UL;
+        this.UL = null;
+        this.UR = null;
     }
 }
+   
+    // // while(queue.length > 0){
+    // //     let cur = queue.shift();
+    // //     if(checkVisted(cur,moves)){
+    // //         moves.push(cur);
+    // //         if(arrayIsEqual(cur,end)) return moves;
+    // //         for(let next of Next(cur)){
+    // //             if(checkVisted(next,moves)){
+    // //                 queue.push(next);
+    // //             }
+    // //         } 
+    // //     }
+    // // }
+    // return moves.move;
 
-// knightMoves(start,end){
-//     moves = [start]
-//     pos = board.find(start);
-//      if pos == end return moves.push(end)
 
-//     LOOP{ 
-//     pos = pos.nextMove
-//     moves.push(pos)
-//     if pos == end return moves.push(end)
-//     }
 
-// }
-
+function checkOutBoard(pos=[]){
+    return pos.every(val=>val >= 0 && val <=7);
+}
+function arrayIsEqual(arr1,arr2){
+    return arr1.every((val,index)=>val == arr2[index])
+}
+function checkVisted(pos,moves){
+    for(let el of moves.move){
+        if(arrayIsEqual(pos,el)) return false
+    }
+    return true
+}
+function Next(pos){
+    const cur = pos;
+    const next = [];
+    //UL
+    pos = [cur[0]-1,cur[1]+2];
+    if(checkOutBoard(pos)) next.push(pos);
+    //UR
+    pos = [cur[0]+1,cur[1]+2];
+    if(checkOutBoard(pos)) next.push(pos);
+    //RU
+    pos = [cur[0]+2,cur[1]+1];
+    if(checkOutBoard(pos)) next.push(pos);
+    //RD
+    pos = [cur[0]+2,cur[1]-1];
+    if(checkOutBoard(pos)) next.push(pos);
+    //DR
+    pos = [cur[0]+1,cur[1]-2];
+    if(checkOutBoard(pos)) next.push(pos);
+    //DL
+    pos = [cur[0]-1,cur[1]-2];
+    if(checkOutBoard(pos)) next.push(pos);
+    //LD
+    pos = [cur[0]-2,cur[1]-1];
+    if(checkOutBoard(pos)) next.push(pos);
+    //LU
+    pos = [cur[0]-2,cur[1]+1];
+    if(checkOutBoard(pos)) next.push(pos);
+    return next;
+}
 module.exports = Board;
