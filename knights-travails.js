@@ -2,15 +2,21 @@ class Board{
     constructor(){
         this.root = null;
     }
-    build(pos=[null,null]){
+    build(pos=[null,null], limit){
         if(!this.root){
             this.root = new Knight(pos);
-            }
-            for(let el in this.root){
+        }
+        function Next(pos, node, limit, level = 0){
+            level++;
+            if(level > limit) return;
+            for(let el in node){
                 if(el != "pos"){
-                    this.root[el] = new Knight([pos[0]+1,pos[1]+1])
+                    node[el] = new Knight(NextPos(el,pos))
+                    Next(node[el].pos, node[el], limit, level)
                 }
             }
+        }
+        Next(pos, this.root, limit);   
     }
     
     // BestMove(end,count = 0){
@@ -98,5 +104,15 @@ function Next(pos){
     pos = [cur[0]-2,cur[1]+1];
     if(checkOutBoard(pos)) next.push(pos);
     return next;
+}
+function NextPos(el,pos){
+    switch(el){
+        case "UL":
+            return [pos[0]-1,pos[1]+2];
+        case "UR":
+            return [pos[0]+1,pos[1]+2];
+        default:
+            console.log("Error");
+    }
 }
 module.exports = Board;

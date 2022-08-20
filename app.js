@@ -3,9 +3,11 @@ const Board = require("./knights-travails");
 // console.log(knightMoves([3,3],[3,3]));
 // knightMoves([3,3],[2.5])
 const board = new Board;
-board.build([3,3])
+board.build([3,3],1)
 
 console.log(board.root)
+console.log(board.root.UL)
+console.log(board.root.UR)
 //goal
 // knightMoves([0,0],[1,2]) == [[0,0],[1,2]]
 // knightMoves([0,0],[3,3]) == [[0,0],[1,2],[3,3]]
