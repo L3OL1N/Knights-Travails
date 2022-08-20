@@ -18,27 +18,27 @@ class Board{
         }
         Next(pos, this.root, limit);   
     }
-    
-    // BestMove(end,count = 0){
-    //     if(queue.length < 0){
-    //         return {Count:100};
-    //     }
-    //     let cur = queue.shift();
-    //         if(checkVisted(cur,moves)){
-    //             moves.move.push(cur);
-    //             if(arrayIsEqual(cur,end)) return {Count:count};
-    //             for(let next of Next(cur)){
-    //                 if(checkVisted(next,moves)){
-    //                     queue.push(next);
-    //                 }
-    //             }
-    //             console.log(queue);
-    //             let result = BestMove(end,count++)
-    //             console.log(result);
-    //             bestMoves.push(result);
-    //             return bestMoves[1];
-    //         }
-    // }
+
+    BestMove(start,end){
+        const moves = [];
+        const Tree = {};
+        if(arrayIsEqual(start,end)){
+            moves.push(start)
+            return moves; 
+        } 
+        for(let i = 1; i < 3;i++){
+            Tree.level = i;
+            this.build(start,i)
+            Tree.tree = this.root;
+            const last = findLast(Tree.tree, i);
+            if(checkContain(end,last)){
+                DFS(end, moves, Tree.tree , Tree.level)
+                return moves;
+            };
+        }
+        return Tree;
+    }
+
 }
 class Knight{
     constructor(pos){
@@ -47,22 +47,6 @@ class Knight{
         this.UR = null;
     }
 }
-   
-    // // while(queue.length > 0){
-    // //     let cur = queue.shift();
-    // //     if(checkVisted(cur,moves)){
-    // //         moves.push(cur);
-    // //         if(arrayIsEqual(cur,end)) return moves;
-    // //         for(let next of Next(cur)){
-    // //             if(checkVisted(next,moves)){
-    // //                 queue.push(next);
-    // //             }
-    // //         } 
-    // //     }
-    // // }
-    // return moves.move;
-
-
 
 function checkOutBoard(pos=[]){
     return pos.every(val=>val >= 0 && val <=7);
@@ -70,11 +54,11 @@ function checkOutBoard(pos=[]){
 function arrayIsEqual(arr1,arr2){
     return arr1.every((val,index)=>val == arr2[index])
 }
-function checkVisted(pos,moves){
-    for(let el of moves.move){
-        if(arrayIsEqual(pos,el)) return false
+function checkContain(pos,arr){
+    for(let el of arr){
+        if(arrayIsEqual(pos,el)) return true;
     }
-    return true
+    return false;
 }
 function Next(pos){
     const cur = pos;
@@ -114,5 +98,43 @@ function NextPos(el,pos){
         default:
             console.log("Error");
     }
+}
+function findLast(tree, level){
+    const last = [];
+    if(checkNull(tree)) {
+        return tree.pos;
+    }
+    for(let el in tree){
+        if(el != "pos" && tree[el]){
+           last.push(findLast(tree[el]));
+        }
+    }
+    return last.flat(level-1);
+}
+function checkNull(tree){
+    for(let el in tree){
+        if(el != "pos"){
+            if(tree[el]) return false;
+        }
+    }
+    return true;
+}
+function DFS(end, moves, tree, level, depth = 0){
+    depth++;
+    // console.log(moves)
+    if(depth > level+1) return;
+    if(arrayIsEqual(tree.pos,end)) return moves.push(tree.pos);
+    if(checkNull(tree)) return ;
+    moves.push(tree.pos);
+    
+    for(let el in tree){
+        if(el != "pos" && tree[el]){
+            if(arrayIsEqual(end,moves[moves.length-1])) return;
+            DFS(end,moves,tree[el],level,depth);
+        }
+    }
+    if(!arrayIsEqual(end,moves[moves.length-1])) moves.pop();
+    console.log(moves)
+    return moves;
 }
 module.exports = Board;
