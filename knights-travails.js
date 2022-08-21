@@ -11,8 +11,11 @@ class Board{
             if(level > limit) return;
             for(let el in node){
                 if(el != "pos"){
-                    node[el] = new Knight(NextPos(el,pos))
-                    Next(node[el].pos, node[el], limit, level)
+                    let nextPos = NextPos(el,pos)
+                    if(nextPos){
+                        node[el] = new Knight(nextPos)
+                        Next(node[el].pos, node[el], limit, level)
+                    }
                 }
             }
         }
@@ -26,7 +29,7 @@ class Board{
             moves.push(start)
             return moves; 
         } 
-        for(let i = 1; i < 3;i++){
+        for(let i = 1; i < 4;i++){
             Tree.level = i;
             this.build(start,i)
             Tree.tree = this.root;
@@ -45,6 +48,12 @@ class Knight{
         this.pos = pos;
         this.UL = null;
         this.UR = null;
+        this.RU = null;
+        this.RD = null;
+        this.DR = null;
+        this.DL = null;
+        this.LD = null;
+        this.LU = null;
     }
 }
 
@@ -90,14 +99,68 @@ function Next(pos){
     return next;
 }
 function NextPos(el,pos){
+    let nextPos =[];
     switch(el){
-        case "UL":
-            return [pos[0]-1,pos[1]+2];
-        case "UR":
-            return [pos[0]+1,pos[1]+2];
+        case "UL":{
+            nextPos = [pos[0]-1,pos[1]+2];
+            if(checkOutBoard(nextPos)){
+                return nextPos;
+            }
+            break;
+        }
+        case "UR":{
+            nextPos = [pos[0]+1,pos[1]+2];
+            if(checkOutBoard(nextPos)){
+                return nextPos;
+            }
+            break;
+        }
+        case "RU":{
+            nextPos = [pos[0]+2,pos[1]+1];
+            if(checkOutBoard(nextPos)){
+                return nextPos;
+            }
+            break;
+        }
+        case "RD":{
+            nextPos = [pos[0]+2,pos[1]-1];
+            if(checkOutBoard(nextPos)){
+                return nextPos;
+            }
+            break;
+        }
+        case "DR":{
+            nextPos = [pos[0]+1,pos[1]-2];
+            if(checkOutBoard(nextPos)){
+                return nextPos;
+            }
+            break;
+        }
+        case "DL":{
+            nextPos = [pos[0]-1,pos[1]-2];
+            if(checkOutBoard(nextPos)){
+                return nextPos;
+            }
+            break;
+        }
+        case "LD":{
+            nextPos = [pos[0]-2,pos[1]-1];
+            if(checkOutBoard(nextPos)){
+                return nextPos;
+            }
+            break;
+        }
+        case "LU":{
+            nextPos = [pos[0]-2,pos[1]+1];
+            if(checkOutBoard(nextPos)){
+                return nextPos;
+            }
+            break;
+        }
         default:
             console.log("Error");
     }
+    return null;
 }
 function findLast(tree, level){
     const last = [];
@@ -134,7 +197,6 @@ function DFS(end, moves, tree, level, depth = 0){
         }
     }
     if(!arrayIsEqual(end,moves[moves.length-1])) moves.pop();
-    console.log(moves)
     return moves;
 }
 module.exports = Board;
