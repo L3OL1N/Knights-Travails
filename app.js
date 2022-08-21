@@ -1,12 +1,8 @@
-const Board = require("./knights-travails");
+const KnightMoves = require("./knights-travails");
  
-// console.log(knightMoves([3,3],[3,3]));
-// knightMoves([3,3],[2.5])
-const board = new Board;
+const knightMoves = KnightMoves;
 
-const Tree = board.BestMove([0,0],[4,5])
-console.log(Tree)
-
+knightMoves([0,0],[7,7]);
 
 
 //goal

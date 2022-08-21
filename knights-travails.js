@@ -28,18 +28,20 @@ class Board{
         if(arrayIsEqual(start,end)){
             moves.push(start)
             return moves; 
-        } 
-        for(let i = 1; i < 4;i++){
+        }
+        let j = 2 ;
+        for(let i = 1; i < j;i++){
             Tree.level = i;
             this.build(start,i)
             Tree.tree = this.root;
             const last = findLast(Tree.tree, i);
             if(checkContain(end,last)){
                 DFS(end, moves, Tree.tree , Tree.level)
-                return moves;
+                return {moves:moves,level:Tree.level};
             };
+            j++;
         }
-        return Tree;
+        return "Error";
     }
 
 }
@@ -68,35 +70,6 @@ function checkContain(pos,arr){
         if(arrayIsEqual(pos,el)) return true;
     }
     return false;
-}
-function Next(pos){
-    const cur = pos;
-    const next = [];
-    //UL
-    pos = [cur[0]-1,cur[1]+2];
-    if(checkOutBoard(pos)) next.push(pos);
-    //UR
-    pos = [cur[0]+1,cur[1]+2];
-    if(checkOutBoard(pos)) next.push(pos);
-    //RU
-    pos = [cur[0]+2,cur[1]+1];
-    if(checkOutBoard(pos)) next.push(pos);
-    //RD
-    pos = [cur[0]+2,cur[1]-1];
-    if(checkOutBoard(pos)) next.push(pos);
-    //DR
-    pos = [cur[0]+1,cur[1]-2];
-    if(checkOutBoard(pos)) next.push(pos);
-    //DL
-    pos = [cur[0]-1,cur[1]-2];
-    if(checkOutBoard(pos)) next.push(pos);
-    //LD
-    pos = [cur[0]-2,cur[1]-1];
-    if(checkOutBoard(pos)) next.push(pos);
-    //LU
-    pos = [cur[0]-2,cur[1]+1];
-    if(checkOutBoard(pos)) next.push(pos);
-    return next;
 }
 function NextPos(el,pos){
     let nextPos =[];
@@ -199,4 +172,15 @@ function DFS(end, moves, tree, level, depth = 0){
     if(!arrayIsEqual(end,moves[moves.length-1])) moves.pop();
     return moves;
 }
+const knightMoves = function(start,end){
+    const board = new Board;
+
+    const bestMove = board.BestMove(start,end);
+    console.log(`You made it in ${bestMove.level} moves!  Here's your path:`);
+    for(let el of bestMove.moves){
+        console.log(el);
+    }
+};
+
 module.exports = Board;
+module.exports = knightMoves;
